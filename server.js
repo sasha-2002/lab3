@@ -36,10 +36,34 @@ app.get('/l', function(req, res) {
         res.redirect(doc.main_url);
     }); 
 });
-
-app.post('/click', urlencodedParser, function (request, response) {
-    let u_code_ = generation_code();
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+app.post('/click', urlencodedParser, async function (request, response) {
+    //let u_code_ = await generation_code();
+    let u_code_;
     
+    mongo.collection("urls").findOne({id: "main_counter"}, function (err, doc){
+        console.log("start");
+        u_code_ = doc.counter;
+        u_code_++;
+        mongo.collection("urls").updateOne(
+            {id: "main_counter"}, 
+            { $set: {counter: u_code_}}
+        );
+        //return i;
+        
+    }).catch(err => {console.log(u_code_);});
+    sleep(5000);
+    console.log('stop');
+
+    
+
+    console.log("code ");
     console.log(u_code_);
     mongo
     .collection('urls')
@@ -55,18 +79,23 @@ app.post('/click', urlencodedParser, function (request, response) {
     response.render('output', { url: "http://localhost:3000/l?id="+u_code_ });
 });
 
-function generation_code(){//todo
-    let i = 0;
-    /*mongo.collection("urls").findOne({id: "main_counter"}, function(err, doc){
+async function generation_code(){//todo
+    let q;
+    mongo.collection("urls").findOne({id: "main_counter"}, function(err, doc) {
+        let i = 0;
         i = doc.counter;
         i++;
         mongo.collection("urls").updateOne(
             {id: "main_counter"}, 
             { $set: {counter: i}}
         );
-    });*/
-    return 0;                 
+        console.log(i);
+        return i;
+    });
+    console.log(q);
+    //
 }
+
 
 
 app.listen(3000, function() {
