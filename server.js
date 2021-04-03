@@ -2,8 +2,6 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongodb = require('mongodb');
 const path = require('path');
-const fs = require("fs");
-
 const MongoClient = mongodb.MongoClient;
 const mongoUrl = 'mongodb://localhost:27017/lab3';
 const urlencodedParser = bodyParser.urlencoded({extended: false});
@@ -13,98 +11,60 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 let mongo;
+let counter_global;
 
-//const mongoClient = new MongoClient(mongoUrl, { useUnifiedTopology: true });
 
 MongoClient.connect(mongoUrl, { useUnifiedTopology: true }).then(function(client) {
     mongo = client.db();
+    mongo.collection("urls").findOne({id: "main_counter"}, function (err, doc){
+
+        counter_global = doc.counter;
+        
+    });
     
 }).catch(error => console.log(error.message));
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+app.get('/', function(request, response) {
+    //response.render('index', { url: " ",  m_url: " "});
+    response.sendFile(path.join(__dirname + '/index.html'));
 });
 
 
-app.get('/l', function(req, res) {
+app.get('/l', function(request, response) {
     
-    let code = req.query.id;
+    let code = request.query.id;
     console.log("req.query.id ");
     console.log(code);
     mongo.collection("urls").findOne({url_code: Number(code)}, function(err, doc){
         console.log(doc);
-        res.redirect(doc.main_url);
+        response.redirect(doc.main_url);
     }); 
 });
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-app.post('/click', urlencodedParser, async function (request, response) {
-    //let u_code_ = await generation_code();
-    let u_code_;
-    
-    mongo.collection("urls").findOne({id: "main_counter"}, function (err, doc){
-        console.log("start");
-        u_code_ = doc.counter;
-        u_code_++;
-        mongo.collection("urls").updateOne(
-            {id: "main_counter"}, 
-            { $set: {counter: u_code_}}
-        );
-        //return i;
-        
-    }).catch(err => {console.log(u_code_);});
-    sleep(5000);
-    console.log('stop');
 
-    
+app.post('/', urlencodedParser, function (request, response) {
+    counter_global++;
+    mongo.collection("urls").updateOne(
+        {id: "main_counter"}, 
+        { $set: {counter: counter_global}}
+    );
 
-    console.log("code ");
-    console.log(u_code_);
+    console.log("code " + counter_global);
+
     mongo
     .collection('urls')
     .insertOne({
-      url_code: u_code_,
+      url_code: counter_global,
       main_url: request.body.input
     })
     .then(function() {
       console.log('Запис створено');
     });
     
-    
-    response.render('output', { url: "http://localhost:3000/l?id="+u_code_ });
+    response.render('index', { url: "http://localhost:3000/l?id="+counter_global, m_url: request.body.input});
+    //response.render('output', { url: "http://localhost:3000/l?id="+counter_global });
 });
-
-async function generation_code(){//todo
-    let q;
-    mongo.collection("urls").findOne({id: "main_counter"}, function(err, doc) {
-        let i = 0;
-        i = doc.counter;
-        i++;
-        mongo.collection("urls").updateOne(
-            {id: "main_counter"}, 
-            { $set: {counter: i}}
-        );
-        console.log(i);
-        return i;
-    });
-    console.log(q);
-    //
-}
-
-
 
 app.listen(3000, function() {
     console.log('App started on http://localhost:3000');
 });
 
-/*
-{
-    "id": "main_counter",
-    "counter": 0
-}
-*/
