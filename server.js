@@ -13,15 +13,11 @@ app.set('views', __dirname + '/views');
 let mongo;
 let counter_global;
 
-
 MongoClient.connect(mongoUrl, { useUnifiedTopology: true }).then(function(client) {
     mongo = client.db();
     mongo.collection("urls").findOne({id: "main_counter"}, function (err, doc){
-
         counter_global = doc.counter;
-        
     });
-    
 }).catch(error => console.log(error.message));
 
 app.get('/', function(request, response) {
