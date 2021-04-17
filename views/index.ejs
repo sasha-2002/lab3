@@ -3,7 +3,7 @@
     <title>cut link</title>
     <%- include('includes/head.ejs'); -%>
 </head>
-<body>
+<body><!--     -->
     <form action="/" method="post" onsubmit="check(this); return false;">
         Link: <input type="text" pattern="https?:\/\/[^\s]+" id="main_input" name="input">
         <input type="submit" value="submit">
@@ -14,6 +14,4 @@
     <p>cut link: <a href= <%= url %>><%= url %></a>  </p>
 
 
-
-    
 </body>
