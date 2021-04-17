@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <title>cut link</title>
+    <%- include('includes/head.ejs'); -%>
+</head>
+<body><!--     -->
+    <form action="/" method="post" onsubmit="check(this); return false;">
+        Link: <input type="text" pattern="https?:\/\/[^\s]+" id="main_input" name="input">
+        <input type="submit" value="submit">
+
+    </form>
+    
+    <p>main link: <a href= <%= m_url %>><%= m_url %></a>  </p>
+    <p>cut link: <a href= <%= url %>><%= url %></a>  </p>
+
+
+</body>
