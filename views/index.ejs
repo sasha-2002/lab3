@@ -1,24 +1,15 @@
 <!DOCTYPE html>
 <head>
     <title>cut link</title>
-    <link rel="shortcut icon" href="ico.ico" />
+    <%- include('includes/head.ejs'); -%>
 </head>
 <body>
-    <script>
-        function check(form_data){
-            if (form_data.main_input.value != ''){
-                form_data.submit();
-            }
-        }
-        </script>
     <form action="/" method="post" onsubmit="check(this); return false;">
         Link: <input type="text" pattern="https?:\/\/[^\s]+" id="main_input" name="input">
         <input type="submit" value="submit">
 
     </form>
-    <!--    (\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])
-            (https?:\/\/[^\s]+)
-    -->
+    
     <p>main link: <a href= <%= m_url %>><%= m_url %></a>  </p>
     <p>cut link: <a href= <%= url %>><%= url %></a>  </p>
 

@@ -9,6 +9,8 @@ const urlencodedParser = bodyParser.urlencoded({extended: false});
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
+app.use('/static', express.static(__dirname + '/public'));
+
 
 let mongo;
 let counter_global;
@@ -21,8 +23,7 @@ MongoClient.connect(mongoUrl, { useUnifiedTopology: true }).then(function(client
 }).catch(error => console.log(error.message));
 
 app.get('/', function(request, response) {
-    //response.render('index', { url: " ",  m_url: " "});
-    response.sendFile(path.join(__dirname + '/index.html'));
+    response.render('index', { url: "",  m_url: ""});
 });
 
 
