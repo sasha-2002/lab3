@@ -2,7 +2,7 @@
   "name": "lab3",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,11 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
+    "jsdoc": "^3.6.6",
     "mongodb": "^3.6.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0",
+    "eslint-config-google": "^0.14.0"
   }
 }
