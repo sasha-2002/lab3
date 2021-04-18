@@ -4,6 +4,7 @@ const mongodb = require('mongodb');
 const path = require('path');
 const MongoClient = mongodb.MongoClient;
 const mongoUrl = 'mongodb://localhost:27017/lab3';
+const domen = "http://localhost:3000";
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 const app = express();
@@ -66,7 +67,7 @@ app.post('/', urlencodedParser, function (request, response) {
             console.log('Запис створено');
         });
         
-        response.render('index', { url: "http://localhost:3000/l?id="+counter_global, m_url: request.body.input});
+        response.render('index', { url: domen +"/l?id="+counter_global, m_url: request.body.input});
     }
     else {
         response.render('invalid')
