@@ -35,8 +35,7 @@ app.get('/', function(request, response) {
 
 app.get('/:id', function(request, response) {
   const code = request.params.id;
-  mongo
-      .collection('urls')
+  mongo.collection('urls')
       .findOne({url_code: Number(code)}, function(err, doc) {
     doc != null ? response.redirect(doc.main_url) : response.render('invalid');
       });
@@ -46,10 +45,11 @@ app.post('/', urlencodedParser, function(request, response) {
   // eslint-disable-next-line max-len
   if (request.body.input.match(/https?:\/\/[^\s]+/g) != null && request.body.input != '') {
     counter_global++;
-    mongo.collection('urls').updateOne(
-        {id: 'main_counter'},
-        {$set: {counter: counter_global}},
-    );
+    mongo.collection('urls')
+        .updateOne(
+            {id: 'main_counter'},
+            {$set: {counter: counter_global}},
+        );
 
     mongo.collection('urls')
         .insertOne({
