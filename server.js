@@ -28,7 +28,7 @@ app.get('/', function(request, response) {
 app.get('/:id', function(request, response) {
   code = request.params.id;
   mongo.collection('urls').findOne({url_code: code}, function(err, doc) {
-    doc != null ? response.redirect(doc.main_url) : response.render('invalid');
+    doc != null ? response.redirect(doc.main_url) : response.render('not_found');
   });
 });
 
@@ -69,7 +69,7 @@ app.listen(3000, function() {
 });
 
 function get_random_id(){
-  let s = (Number(new Date)+15000+getRandomInt(100000000)).toString();
+  let s = (Number(new Date)+getRandomInt(15000)+getRandomInt(100000000)).toString();
   s += '0';
   let len = 14;//13 + 1
   let result = "";
