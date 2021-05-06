@@ -5,14 +5,14 @@
 <body>
     <div id="app2">
         <%- include('includes/topnav.ejs'); -%>
-        <div v-if="status == 'main' " class="container">
+        <div class="container">
             <div class = "box">
                 <div class = "input">
                     <form id="form1" class="transparent" onsubmit="return false;">
                         <div class="form-inner">
                             <h3 >Your link</h3>
-                                <label for="input">Paste link:
-                                    <input id="url" type="text" id="main_input" name="input" 
+                                <label  for="input">Paste link:
+                                    <input type="text" id="main_input" name="input" 
                                     v-on:input="change_input"
                                     v-bind:value="input_value"
                                     v-bind:placeholder="placeholder_string"
@@ -21,20 +21,11 @@
                                 </label>
                                 <label1>main link: <a class="myElement" v-bind:href = "m_url" >  {{m_url}}   </a></label1>
                                 <label1>cut link:  <a class="myElement" v-bind:href = "url" > {{url}}  </a></label1>
-                                <input type="submit" v-on:click="send" class="center" value="Ок">
+                                <input type="submit" id="main_button" v-on:click="send" class="center" value="Ок">
                         </div>
                     </form>
                 </div> 
             </div>  
-        </div>  
-        <div v-else-if="status == not_found">
-            <img class="img_out" src="/static/404.jpg" alt="404" srcset="">
-        </div>
-        <div v-else-if="status == invalid">
-            <img class="img_out" src="/static/potato.jpg" alt="potato" srcset="">
-        </div>
-        <div v-else>
-            <p>error!!!!</p>
         </div>
         <%- include('includes/down_nav.ejs'); -%>
     </div>
@@ -44,7 +35,6 @@
     let App = new Vue ({
         el: "#app2",
         data: {
-            status: 'main',
             url:  "",
             m_url:  "",
             input_value:  "",
@@ -56,8 +46,14 @@
             },
             send(){
                 if (this.input_value.match(regex_check_url) != null) {
+                    
                     axios.post('/', {"input": this.input_value})
                         .then((response) => {
+                            if(response.data.status){
+                                this.input_value = "";
+                                this.placeholder_string = "enter correct url!!!!";
+                                this.$refs.input_string.focus();
+                            }
                             this.url = response.data.url;
                             this.m_url = response.data.m_url;
                                                    
@@ -69,13 +65,9 @@
                     this.input_value = "";
                     this.placeholder_string = "enter correct url!!!!";
                     this.$refs.input_string.focus();
-                }
-  
-
-                
+                }         
             }
         }
     });
-
     </script>
 </body>

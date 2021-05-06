@@ -1,22 +1,18 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongodb = require('mongodb');
-const axios = require('axios');
 
 const regex_url = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g
 
 const MongoClient = mongodb.MongoClient;
 const mongoUrl = 'mongodb+srv://admin:admin@lab3.fsyl6.mongodb.net/lab3';
 const domen = 'http://localhost:3000';
-//const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(bodyParser.json());
 app.use('/static', express.static(__dirname + '/public'));
-
-
 
 let mongo;
 
@@ -32,11 +28,9 @@ app.get('/', function(request, response) {
 app.get('/:id', function(request, response) {
   code = request.params.id;
   mongo.collection('urls').findOne({url_code: code}, function(err, doc) {
-    doc != null ? response.redirect(doc.main_url) : response.render("not_found");;
+    doc != null ? response.redirect(doc.main_url) : response.render('not_found');;
   });
 });
-
-
 
 app.post('/', async function(request, response) {
   let arr_url_0 = request.body.input.match(regex_url);
@@ -48,10 +42,7 @@ app.post('/', async function(request, response) {
         
       }
       else {
-        //todo
-        let id_s = get_random_id();
-        // зробити перевірку на те якщо такий код вже є в базі, хоча це малоймовірно(дуже)
-        //todo
+        let id_s = get_random_id(); 
         mongo.collection('urls').insertOne({
           url_code: id_s,
           main_url: request.body.input,
@@ -63,12 +54,12 @@ app.post('/', async function(request, response) {
     });
   }
   else{
-    response.render("invalid");
+    response.json({status: "invalid"});
   }
 });
 
 app.get('*', function(request, response) {
-  response.renser("not_found");
+  response.render('not_found');
 });
 
 app.listen(3000, function() {

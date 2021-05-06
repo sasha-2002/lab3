@@ -2,6 +2,12 @@
     text-transform: lowercase;
     color: #E70017;
   }
+#main_button:hover {
+    background: blue;
+}
+#main_button:active {
+    background: rgb(35, 190, 48);
+}
 label1 {
     display: block;
     padding-left: 15px;
