@@ -58,13 +58,9 @@
                 if (this.input_value.match(regex_check_url) != null) {
                     axios.post('/', {"input": this.input_value})
                         .then((response) => {
-                            if(response.data.status == "invalid"){
-                               this.status = response.data.status;
-                            }
-                            else{
-                                this.url = response.data.url;
-                                this.m_url = response.data.m_url;
-                            }                           
+                            this.url = response.data.url;
+                            this.m_url = response.data.m_url;
+                                                   
                         }, (error) => {
                             console.log(error);
                         });  
