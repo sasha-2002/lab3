@@ -36,8 +36,8 @@ label1 {
     margin-left: 15px;
     padding: 4px;
     font-family: sans-serif;   
-    background-image:url(fon.jpg);
-    background-repeat: no-repeat;
+    background-image:url(fon.webp);
+    background-repeat: repeat;
  }
  
  .topnav {
@@ -89,7 +89,7 @@ label1 {
     background-attachment: fixed;
     background-size: cover;
     float: center;
-    margin-top: 15%;
+    margin-top: 3%;
     box-sizing: content-box;
     overflow: hidden;
     border-radius: 70px;    
@@ -99,10 +99,11 @@ label1 {
     position: relative;
     max-width: 80%;
     padding: 20px 30px;
-    margin: 10px 5% 20%;
+    margin: 10px 5% 2%;
     background-color: #00a383;
     background-size: contain;
-     border-radius: 80px;
+    border-radius: 80px;
+    text-overflow: clip;
  }
  .transparent:before {
     content: "";
@@ -202,6 +203,8 @@ label1 {
              background: #292929;
              padding: 3% 4%;
              position: relative;
+             margin-bottom: 0;
+             margin-top: 15%;
          }
          .subscribe h4 {
              font-size: 250%;
