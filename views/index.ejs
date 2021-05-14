@@ -19,14 +19,48 @@
                                     ref="input_string"
                                     >
                                 </label>
-                                <label1>main link: <a class="myElement" v-bind:href = "m_url" >  {{m_url}}   </a></label1>
-                                <label1>cut link:  <a class="myElement" v-bind:href = "url" > {{url}}  </a></label1>
+                                <label1>main link:&nbsp;<a class="myElement" v-bind:href = "m_url" >  {{m_url}}   </a></label1>
+                                <label1>cut link:&nbsp;<a class="myElement" v-bind:href = "url" > {{url}}  </a></label1>
                                 <input type="submit" id="main_button" v-on:click="send" class="center" value="Ок">
                         </div>
                     </form>
                 </div> 
             </div>  
         </div>
+
+        <ul v-if="link_array.length">
+            <li v-for="link in link_array">
+              <div class="container">
+                <div class="box">
+                  <form class="transparent" onsubmit="return false;">
+                    <div class="form-inner">
+                        <table class="tbl">
+                            <tbody>
+                            <tr>
+                                <td>Main:&nbsp;</td>
+                                <td colspan="2">
+                                    <label1><a class="myElement" v-bind:href = "link['m_url']" >{{link["m_url"]}}</a>
+                                    </label1>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cut:&nbsp;</td>
+                                <td colspan="2">
+                                    <label1>
+                                        <a class="myElement" v-bind:href = "link['url']" >{{link["url"]}}</a>
+                                    </label1>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                  </form>
+                </div>
+              </div>
+  
+            </li>
+          </ul>
+
         <%- include('includes/down_nav.ejs'); -%>
     </div>
         
@@ -38,7 +72,8 @@
             url:  "",
             m_url:  "",
             input_value:  "",
-            placeholder_string: "enter url" 
+            placeholder_string: "enter url",
+            link_array: Array()
         },
         methods: {
             change_input(event){
@@ -56,7 +91,7 @@
                             }
                             this.url = response.data.url;
                             this.m_url = response.data.m_url;
-                                                   
+                            this.link_array.push(response.data);             
                         }, (error) => {
                             console.log(error);
                         });  
